@@ -3,6 +3,7 @@
 # prisma
 /prisma/migrations/
 /node_modules/.prisma/
+/prisma/dev.db
 
 
 # dependencies

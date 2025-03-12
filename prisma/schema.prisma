@@ -32,9 +32,9 @@ model Client {
 model Phone {
   id        Int      @id @default(autoincrement())
   number    String   @unique
-  client    Client?  @relation(fields: [clientId], references: [id])
+  client    Client?  @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   clientId  Int?
-  Employe   Employe? @relation(fields: [employeId], references: [id])
+  Employe   Employe? @relation(fields: [employeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   employeId Int?
 }
 
@@ -42,6 +42,6 @@ model Employe {
   id        Int     @id @default(autoincrement())
   nom       String
   telephone Phone[]
-  client    Client? @relation(fields: [clientId], references: [id])
+  client    Client? @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   clientId  Int?
 }
