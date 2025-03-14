@@ -1,22 +1,38 @@
-import React from 'react'
-import Image from "next/image";
-import NavLinks from './NavLinks';
+"use client"
+import Link from "next/link";
+import { User, BriefcaseBusiness } from "lucide-react"; // Assurez-vous d'installer lucide-react pour les icônes
+import { usePathname } from "next/navigation";
+const links = [
+  { name: "Client", href: "/Client", icon: User },
+  { name: "Travaux", href: "/Travaux", icon: BriefcaseBusiness },
+];
 
-const SideBar = () => {
+
+
+export default function SideBar() {
+  const pathname = usePathname();
+
   return (
-    <div className='h-screen md:w-64 bg-white  p-3'>
-      {/* Logo */}
-      <div className="flex justify-center">
-        <Image src="/Google.png" alt="Logo OBA COLOR" width={100} height={100} />
-      </div>
-
-
-      {/* Navigation Links */}
-      <div className='flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2 mt-5'>
-        <NavLinks />
+    <div className="w-56 bg-white h-screen border-r border-gray-200">
+      <div className="p-4">
+        <nav>
+          <ul className="space-y-2">
+            {links.map((link) => (
+              <li key={link.name}>
+                <Link
+                  href={link.href}
+                  className={`flex items-center p-2 text-gray-700 hover:bg-blue-50 rounded-lg transition-colors duration-200 ${
+                    pathname === link.href ? "bg-blue-100 text-blue-700" : ""
+                  }`}
+                >
+                  <link.icon className="w-5 h-5 mr-2" />
+                  <span>{link.name}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
     </div>
-  )
+  );
 }
-
-export default SideBar;

@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 
 export default function Home() {
   const empData = {
@@ -7,10 +8,5 @@ export default function Home() {
           ],
       };
   
-      // updateEmploye(2,empData);
-      // deleteClient(1)
-  return (
-    <div className="bg-orange-300 text-cyan-800">
-            done</div>
-  );
+      redirect("/Client");
 }
