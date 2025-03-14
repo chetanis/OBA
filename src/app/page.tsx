@@ -10,6 +10,7 @@ export default function Home() {
       // updateEmploye(2,empData);
       // deleteClient(1)
   return (
-    <div>done</div>
+    <div className="bg-orange-300 text-cyan-800">
+            done</div>
   );
 }
