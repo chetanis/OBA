@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SideBar from "./components/NavBar/SideBar";
 import Header from "./components/NavBar/Header";
+import ProtectedRoute from "./components/protected/ProtectedRoute";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,7 +23,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-200`}>
-        {/* Conteneur principal */}
+      
+        {/* <ProtectedRoute> Conteneur principal */}
         <div className="flex">
           <SideBar />
           <div className="flex flex-col w-full">
@@ -33,6 +35,7 @@ export default function RootLayout({
             <div className="p-4">{children}</div>
           </div>
         </div>
+        { /*</ProtectedRoute>*/}
       </body>
     </html>
   );

@@ -13,7 +13,7 @@ export default function SideBar() {
   const pathname = usePathname();
 
   return (
-    <div className="w-56 bg-white h-screen border-r border-gray-200">
+    <div className="w-56 bg-white h-screen ">
       <div className="p-4">
         <nav>
           <ul className="space-y-2">
