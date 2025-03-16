@@ -1,6 +1,6 @@
 "use client"
+import { BriefcaseBusiness, User } from "lucide-react"; // Assurez-vous d'installer lucide-react pour les icônes
 import Link from "next/link";
-import { User, BriefcaseBusiness } from "lucide-react"; // Assurez-vous d'installer lucide-react pour les icônes
 import { usePathname } from "next/navigation";
 const links = [
   { name: "Client", href: "/Client", icon: User },
@@ -21,8 +21,8 @@ export default function SideBar() {
               <li key={link.name}>
                 <Link
                   href={link.href}
-                  className={`flex items-center p-2 text-gray-700 hover:bg-blue-200 rounded-lg transition-colors duration-200 ${
-                    pathname === link.href ? "bg-blue-400 text-blue-700" : ""
+                  className={`flex items-center p-2  hover:bg-blue-200 rounded-lg transition-colors duration-200 ${
+                    pathname === link.href ? "bg-blue-400 text-blue-700" : "text-gray-700"
                   }`}
                 >
                   <link.icon className="w-5 h-5 mr-2" />

@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { User, BriefcaseBusiness } from "lucide-react";
+import { BriefcaseBusiness, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
