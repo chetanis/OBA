@@ -25,7 +25,7 @@ export default function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center mt-16">
+    <div className="flex items-center justify-center min-h-screen bg-gray-200">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-2xl"
@@ -72,8 +72,6 @@ export default function Login() {
         >
           Se connecter
         </button>
-        
-        
       </form>
     </div>
   );

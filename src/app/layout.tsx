@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import SideBar from "./components/NavBar/SideBar";
-import Header from "./components/NavBar/Header";
-import ProtectedRoute from "./components/protected/ProtectedRoute";
+import ClientLayout from "./layout2"; // Importer le composant client
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,17 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-200`}>
-      
         {/* <ProtectedRoute> Conteneur principal */}
         <div className="flex">
-          <SideBar />
-          <div className="flex flex-col w-full">
-            {/* Header prend toute la largeur */}
-            <Header />
-            
-            {/* Contenu principal */}
-            <div className="p-4">{children}</div>
-          </div>
+          <ClientLayout>{children}</ClientLayout>
         </div>
         { /*</ProtectedRoute>*/}
       </body>

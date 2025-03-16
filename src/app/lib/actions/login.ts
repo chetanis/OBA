@@ -8,6 +8,8 @@ import { cookies } from "next/headers";
 const prisma = new PrismaClient();
 const SECRET_KEY = "votre_secret_key"; // Remplacez par une clé sécurisée
 
+
+//fonction de login 
 export async function authenticate(username: string, password: string) {
   const user = await prisma.user.findUnique({
     where: { username },
@@ -51,6 +53,8 @@ export async function authenticate(username: string, password: string) {
   return { success: true };
 }
 
+
+//fonction vérifier est ce que le user est login avec le token est ce que il est valide ou non 
 export async function getUserFromToken() {
   const cookieStore = await cookies();
   let token: string | undefined = cookieStore.get("token")?.value;
@@ -77,6 +81,8 @@ export async function getUserFromToken() {
   }
 }
 
+
+// refresh token 
 export async function refreshToken() {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refreshToken")?.value;
@@ -112,6 +118,9 @@ export async function refreshToken() {
   }
 }
 
+
+
+// fonction pour le logout
 export async function logout() {
   const cookieStore = await cookies();
   cookieStore.delete("token"); // Supprime le token JWT
