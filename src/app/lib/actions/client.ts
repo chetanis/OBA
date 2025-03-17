@@ -26,7 +26,6 @@ export async function createClient(input: ClientFormData) {
             }
         })
 
-
         return { success: true, data: client }
 
     } catch (error) {
