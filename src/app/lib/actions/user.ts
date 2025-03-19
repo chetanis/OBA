@@ -83,3 +83,21 @@ export async function deleteUser(formData: FormData) {
     return { error: "Erreur lors de la suppression de l'utilisateur" };
   }
 }
+
+export async function getUsers() {
+  try {
+    const users = await prisma.user.findMany({
+      select: {
+        username: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    return users;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return [];
+  }
+}

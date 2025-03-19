@@ -7,7 +7,7 @@ import SideLink from "./SideLink";
 
 const linksRessources = [
   { name: "Clients", href: "/Client", icon: Users },
-  { name: "Utilisateurs", href: "/Utilisateurs", icon: ShieldUser },
+  { name: "Utilisateurs", href: "/User", icon: ShieldUser },
 ];
 
 const linksTravaux = [{ name: "Projets", href: "/Travaux", icon: BriefcaseBusiness }];
@@ -30,7 +30,7 @@ export default function SideBar({ isMobile = false, closeSidebar }: SideBarProps
       )}
 
       <div
-        className={`w-64 bg-white h-screen p-2 shadow-md z-50 ${
+        className={`w-64 bg-white h-screen p-3 shadow-md z-50 ${
           isMobile
             ? "fixed top-0 left-0 transition-transform transform translate-x-0"
             : "hidden lg:block"

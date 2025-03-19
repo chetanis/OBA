@@ -33,7 +33,7 @@ Table Project {
   note String
   status ProjectStatus [not null]
   type ProjectType [not null]
-  nbPlaque_Film Int
+  nbPlaque_Film Int [not null]
   typePlaque PlaqueType
   dimension_x Float
   dimension_y Float
