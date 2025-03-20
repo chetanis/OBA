@@ -1,8 +1,8 @@
 "use client"; // Pour utiliser useState
-import React, { useState } from "react";
 import { Mybutton } from "@/app/components/Button/Mybutton";
 import PathName from "@/app/components/PathName/PathName";
 import { Search } from "lucide-react";
+import { useState } from "react";
 import UserTable from "../../Table/Mytable";
 
 const paths = [
@@ -26,24 +26,22 @@ const MainPageUser = () => {
       <div className="p-4">
         {/* 📌 Ligne 1 : Titre et bouton alignés */}
         <div className="flex justify-between items-center mb-1">
-          <h4 className="">Rechercher un utilisateur</h4>
+          <div className="flex justify-start items-center rounded-lg mt-2 relative w-full max-w-md">
+            {/* Icône de recherche */}
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
+
+            {/* Input de recherche */}
+            <input
+              type="text"
+              placeholder="Rechercher un utilisateur..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full p-2 pl-10 border rounded-lg shadow-sm focus:outline-none border-blue-400 focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
           <Mybutton text="Créer utilisateur" />
         </div>
 
-        {/* 📌 Ligne 2 : Barre de recherche */}
-        <div className="flex justify-start items-center rounded-lg mt-2 relative w-full max-w-md">
-          {/* Icône de recherche */}
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
-
-          {/* Input de recherche */}
-          <input
-            type="text"
-            placeholder="Rechercher un utilisateur..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full p-2 pl-10 border rounded-lg shadow-sm focus:outline-none border-blue-400 focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
       </div>
 
       {/* 📌 Table des utilisateurs */}
