@@ -9,7 +9,7 @@ interface MyButtonProps {
 export const Mybutton = (props: MyButtonProps) => {
   return (
     <button 
-      className={`bg-blue-600 rounded-sm px-3 py-2 text-white ${props.className || ''}`} 
+      className={`bg-blue-700 rounded-sm px-2 py-2 text-white ${props.className || ''}`} 
       onClick={props.onClick}
     >
       {props.text || "Click me"}

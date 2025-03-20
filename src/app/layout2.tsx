@@ -22,7 +22,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         {!isPageRoute && <Header />}
 
         {/* Contenu principal */}
-        <div className='p-4'>{children}</div>
+        <div>{children}</div>
       </div>
       </ProtectedRoute>
     </>

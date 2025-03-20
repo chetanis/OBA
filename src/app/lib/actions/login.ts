@@ -63,6 +63,7 @@ export async function getUserFromToken() {
     return null; // Aucun token trouvé
   }
 
+
   try {
     const decoded = jwt.verify(token, SECRET_KEY) as { username: string; role: string };
     return decoded; // Retourne l'utilisateur avec son rôle

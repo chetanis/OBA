@@ -1,8 +1,8 @@
 "use server";
-import { PrismaClient } from "@prisma/client";
+
+import { PrismaClient, Role } from "@prisma/client";
 import { hash } from "bcryptjs";
 import { userSchema, updateUserSchema } from "@/types/user";
-
 
 const prisma = new PrismaClient();
 
@@ -13,6 +13,11 @@ export async function createUser(formData: FormData) {
     password: formData.get("password") as string,
     role: formData.get("role") as string,
   };
+
+  // ✅ Vérification : s'assurer que le rôle est valide
+  if (!Object.values(Role).includes(data.role as Role)) {
+    return { error: "Rôle invalide" };
+  }
 
   const validatedData = userSchema.safeParse(data);
   if (!validatedData.success) {
@@ -25,7 +30,7 @@ export async function createUser(formData: FormData) {
       data: {
         username: data.username,
         password: hashedPassword,
-        role: data.role,
+        role: data.role as Role, // ✅ Correction ici
       },
     });
     return { success: "Utilisateur créé avec succès", user };
@@ -42,19 +47,24 @@ export async function updateUser(formData: FormData) {
     role: formData.get("role") as string | null,
   };
 
+  // ✅ Vérification : s'assurer que le rôle est valide si fourni
+  if (data.role && !Object.values(Role).includes(data.role as Role)) {
+    return { error: "Rôle invalide" };
+  }
+
   const validatedData = updateUserSchema.safeParse(data);
   if (!validatedData.success) {
     return { error: validatedData.error.errors };
   }
 
   try {
-    let updateData: { password?: string; role?: string } = {};
-    
+    let updateData: { password?: string; role?: Role } = {};
+
     if (data.password) {
       updateData.password = await hash(data.password, 10);
     }
     if (data.role) {
-      updateData.role = data.role;
+      updateData.role = data.role as Role; // ✅ Correction ici
     }
 
     const updatedUser = await prisma.user.update({
@@ -84,6 +94,7 @@ export async function deleteUser(formData: FormData) {
   }
 }
 
+// **4️⃣ Fonction pour récupérer les utilisateurs**
 export async function getUsers() {
   try {
     const users = await prisma.user.findMany({
@@ -95,7 +106,11 @@ export async function getUsers() {
       },
     });
 
-    return users;
+    // ✅ Correction : Assurer que `role` est bien typé comme `Role`
+    return users.map(user => ({
+      ...user,
+      role: user.role as Role, // ✅ Correction ici
+    }));
   } catch (error) {
     console.error("Error fetching users:", error);
     return [];

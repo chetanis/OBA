@@ -6,9 +6,9 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Données de l'utilisateur admin
-  const username = 'info';
+  const username = 'employe';
   const password = '12345678'; // Mot de passe en clair
-  const role = 'infographe';
+  const role = 'employe';
 
   // Hacher le mot de passe avec bcryptjs
   const hashedPassword = await hash(password, 10); // 10 est le coût du hachage

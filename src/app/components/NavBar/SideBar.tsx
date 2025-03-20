@@ -30,7 +30,7 @@ export default function SideBar({ isMobile = false, closeSidebar }: SideBarProps
       )}
 
       <div
-        className={`w-64 bg-white h-screen p-3 shadow-md z-50 ${
+        className={`w-64 bg-white h-screen p-3 z-50 shadow-[10px_0_20px_rgba(0,0,0,0.1)] ${
           isMobile
             ? "fixed top-0 left-0 transition-transform transform translate-x-0"
             : "hidden lg:block"
@@ -42,11 +42,12 @@ export default function SideBar({ isMobile = false, closeSidebar }: SideBarProps
           </button>
         )}
 
-       
+        {/* Logo */}
         <div className="w-full flex justify-center items-center mb-5 mt-2">
           <Image src="/Google.png" width={100} height={100} alt="logo oba color" />
         </div>
 
+        {/* Navigation */}
         <nav className="overflow-y-auto max-h-[calc(100vh-150px)]">
           <MyLine name={"Ressources"} />
           <SideLink liste={linksRessources} pathname={pathname} />

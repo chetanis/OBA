@@ -21,7 +21,7 @@ interface LinkItem {
           <li key={link.name}>
             <Link
               href={link.href}
-              className={`flex items-center p-2 hover:bg-blue-100 rounded-md transition-colors duration-200 ${
+              className={`flex items-center p-2 hover:bg-blue-100 rounded-md transition-colors duration-200 text-sm ${
                 pathname === link.href ? "bg-blue-200 text-blue-900" : "text-blue-700"
               }`}
             >

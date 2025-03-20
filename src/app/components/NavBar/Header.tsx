@@ -36,18 +36,18 @@ const Header = () => {
       {/* Sidebar mobile */}
       {isSidebarOpen && <SideBar isMobile={true} closeSidebar={() => setIsSidebarOpen(false)} />}
 
-      <div className="bg-white py-1 px-3 sm:px-2 flex justify-between items-center gap-3">
+      <div className="bg-white py-1 px-3 sm:px-2 flex justify-between items-center gap-3 shadow-md">
         {/* Bouton pour ouvrir la sidebar sur mobile */}
         <div>
-        <button
-          onClick={() => setIsSidebarOpen(true)}
-          className="lg:hidden p-2 rounded-md hover:bg-gray-200"
-        >
-          <Menu className="w-6 h-6" />
-        </button>
+          <button
+            onClick={() => setIsSidebarOpen(true)}
+            className="lg:hidden p-2 rounded-md hover:bg-gray-200"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
         </div>
 
-        <div className="flex justify-center items-center gap-3">
+        <div className="flex justify-center items-center gap-3 px-6">
           <div className="flex justify-center items-center gap-3">
             <Avatar className="w-10 h-10">
               <AvatarImage src="https://github.com/shadcn.png" />

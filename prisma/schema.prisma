@@ -3,10 +3,16 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+enum Role {
+  admin
+  infographe
+  employe
+}
+
 model User {
   username  String   @id @unique
   password  String
-  role      String
+  role      Role
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -18,7 +24,6 @@ generator client {
 generator dbml {
   provider = "prisma-dbml-generator"
 }
-
 
 datasource db {
   provider = "sqlite"
