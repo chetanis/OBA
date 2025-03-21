@@ -1,4 +1,5 @@
 "use client";
+import CreateClientPage from '@/app/components/Cpages/Clients/CreateClient';
 import MainPageClient from '@/app/components/Cpages/Clients/MainPageClient';
 import { useState } from 'react';
 
@@ -7,7 +8,7 @@ const Client = () => {
 
   return (
     <>
-      {isCreating ? <CreateUserPage /> : <MainPageClient onCreateClient={() => setIsCreating(true)} />}
+      {isCreating ? <CreateClientPage /> : <MainPageClient onCreateClient={() => setIsCreating(true)} />}
     </>
   );
 }
