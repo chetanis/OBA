@@ -5,15 +5,13 @@ import { hash } from "bcryptjs";
 import { userSchema, updateUserSchema } from "@/types/user";
 
 const prisma = new PrismaClient();
-
+type UserFormData = {
+  username: string;
+  password: string;
+  role: "admin" | "infographe" | "employe";
+};
 // **1️⃣ Fonction pour créer un utilisateur**
-export async function createUser(formData: FormData) {
-  const data = {
-    username: formData.get("username") as string,
-    password: formData.get("password") as string,
-    role: formData.get("role") as string,
-  };
-
+export async function createUser(data: UserFormData) {
   // ✅ Vérification : s'assurer que le rôle est valide
   if (!Object.values(Role).includes(data.role as Role)) {
     return { error: "Rôle invalide" };
@@ -30,7 +28,7 @@ export async function createUser(formData: FormData) {
       data: {
         username: data.username,
         password: hashedPassword,
-        role: data.role as Role, // ✅ Correction ici
+        role: data.role as Role,
       },
     });
     return { success: "Utilisateur créé avec succès", user };

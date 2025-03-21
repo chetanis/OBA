@@ -1,16 +1,21 @@
-import { Mybutton } from '@/app/components/Button/Mybutton'
-import MainPageUser from '@/app/components/Cpages/User/MainPageUser'
-import PathName from '@/app/components/PathName/PathName'
-import UserTable from '@/app/components/Table/Mytable'
-import React from 'react'
+"use client";
+import { useState } from "react";
+import MainPageUser from "@/app/components/Cpages/User/MainPageUser";
+import CreateUserPage from "@/app/components/Cpages/User/CreateUser";
+const paths = [
+  { label: "Home", href: "/" },
+  { label: "Utilisateurs", href: "/User" },
+  { label: "Liste des Utilisateurs",href:"/" }
+];
 
 const User = () => {
- 
-  return (
-    <MainPageUser/>
-    
-    
-  )
-}
+  const [isCreating, setIsCreating] = useState(false);
 
-export default User
+  return (
+    <>
+      {isCreating ? <CreateUserPage /> : <MainPageUser onCreateUser={() => setIsCreating(true)} />}
+    </>
+  );
+};
+
+export default User;
