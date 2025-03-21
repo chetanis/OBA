@@ -1,8 +1,8 @@
 "use client"; // Marquer ce composant comme un composant client
 
 import { usePathname } from 'next/navigation';
-import SideBar from "./components/NavBar/SideBar";
 import Header from "./components/NavBar/Header";
+import SideBar from "./components/NavBar/SideBar";
 import ProtectedRoute from './components/protected/ProtectedRoute';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {

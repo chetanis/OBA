@@ -1,7 +1,6 @@
-import { BriefcaseBusiness, Users, ShieldUser, X } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { BriefcaseBusiness, ShieldUser, Users, X } from "lucide-react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import MyLine from "../Myline/Myline";
 import SideLink from "./SideLink";
 
@@ -30,7 +29,7 @@ export default function SideBar({ isMobile = false, closeSidebar }: SideBarProps
       )}
 
       <div
-        className={`w-64 bg-white h-screen p-3 z-50 shadow-[10px_0_20px_rgba(0,0,0,0.1)] ${
+        className={`w-64 bg-white sticky top-0  h-screen p-3 z-50 shadow-[10px_0_20px_rgba(0,0,0,0.1)] ${
           isMobile
             ? "fixed top-0 left-0 transition-transform transform translate-x-0"
             : "hidden lg:block"
