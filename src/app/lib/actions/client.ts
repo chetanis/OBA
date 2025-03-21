@@ -121,3 +121,23 @@ export async function deleteEmploye(id: number) {
         return { success: false, error: error instanceof Error ? error.message : "une erreur s'est produite" };
     }
 }
+
+export async function getClients(){
+    try {
+        const clients = await prisma.client.findMany({
+            include:{
+                telephone:true,
+                //nb of projects
+                _count:{
+                    select:{
+                        projects:true
+                    }
+                },
+            }
+        });
+        return clients;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+}
