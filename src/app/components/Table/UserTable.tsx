@@ -1,7 +1,8 @@
 "use client"; // Important pour que ce soit un Client Component
 import React, { useEffect, useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
-import { getUsers } from "@/app/lib/actions/user";
+import { deleteUser, getUsers } from "@/app/lib/actions/user";
+import DeleteUserButton from "../Cpages/User/ConfirmerDeleteUser";
 
 interface User {
   username: string;
@@ -47,6 +48,22 @@ const UserTable = ({ search }: { search: string }) => {
       );
     }
   }, [search, users]);
+   
+
+  // fonction pour la supperssion de user avec leur username
+  async function Handledeleteuser(username:string) {
+    const resp =await deleteUser(username);
+
+    if (resp.success){
+      console.log('user supprimer');
+      // Mise à jour de la liste en filtrant l'utilisateur supprimé
+    setFilteredUsers((prevUsers) => prevUsers.filter((user) => user.username !== username));
+    setUsers((prevUsers) => prevUsers.filter((user) => user.username !== username));
+    }else{
+      console.log('haja rey ghalta ');
+    }
+
+  }
 
   return (
     <div className="overflow-x-auto w-full mx-auto rounded-lg">
@@ -76,9 +93,9 @@ const UserTable = ({ search }: { search: string }) => {
                   <button className="text-gray-500 hover:text-blue-600">
                     <Pencil size={16}/>
                   </button>
-                  <button className="text-gray-500 hover:text-red-600">
-                    <Trash2 size={16}/>
-                  </button>
+                  {user.username !== "admin" ? (
+  <DeleteUserButton username={user.username} onDelete={Handledeleteuser} />
+) : null}
                 </td>
               </tr>
             ))

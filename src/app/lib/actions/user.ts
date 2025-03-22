@@ -76,12 +76,10 @@ export async function updateUser(formData: FormData) {
   }
 }
 
-// **3️⃣ Fonction pour supprimer un utilisateur**
-export async function deleteUser(formData: FormData) {
-  const username = formData.get("username") as string;
 
+export async function deleteUser(username: string) {
   if (!username) return { error: "Nom d'utilisateur requis" };
-
+  if(username =='admin') return{error : "vous pouvez supprimer utilisateur admin"}
   try {
     await prisma.user.delete({
       where: { username },
@@ -91,6 +89,8 @@ export async function deleteUser(formData: FormData) {
     return { error: "Erreur lors de la suppression de l'utilisateur" };
   }
 }
+
+
 
 // **4️⃣ Fonction pour récupérer les utilisateurs**
 export async function getUsers() {

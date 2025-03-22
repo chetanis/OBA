@@ -73,8 +73,8 @@ const CreateUserPage = () => {
   return (
     <div className="p-6">
       <PathName paths={paths} />
-      <h2 className="text-2xl font-bold mb-4">Créer un Utilisateur</h2>
-      <h4 className="pl-4">Informations de l'utilisateur</h4>
+      <h2 className="text-2xl font-bold mb-4 text-blue-900">Créer un Utilisateur</h2>
+      <h4 className="pl-4 mt-8">Informations de l'utilisateur</h4>
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4 px-11">
         <MyInput label="Nom d'utilisateur" name="username" placeholder="Nom d'utilisateur" form={form} />

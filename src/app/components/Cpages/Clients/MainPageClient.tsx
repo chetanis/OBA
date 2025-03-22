@@ -16,7 +16,7 @@ const MainPageClient = ({ onCreateClient }: { onCreateClient: () => void }) => {
   return (
     <div className="p-6">
       <PathName paths={paths} />
-      <h2 className="text-2xl font-bold  text-gray-800">Liste des Clients</h2>
+      <h2 className="text-2xl font-bold text-blue-900">Liste des Clients</h2>
 
       <div className="p-4">
         {/* 📌 Ligne 1 : Titre et bouton alignés */}

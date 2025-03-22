@@ -6,6 +6,7 @@ import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import PathName from "../../PathName/PathName";
+import { Mybutton } from "../../Button/Mybutton";
 
 const CreateClientPage = () => {
     const form = useForm<ClientFormData>({
@@ -80,19 +81,19 @@ const CreateClientPage = () => {
     return (
         <div className="p-6">
             <PathName paths={paths} />
-            <h2 className="text-2xl font-bold mb-4">Créer un Client</h2>
-            <h4 className="pl-4">Informations du client</h4>
+            <h2 className="text-2xl font-bold mb-4 text-blue-900">Créer un Client</h2>
+            <h4 className="pl-4 mt-5">Informations du client</h4>
 
             <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 px-11">
                 {/* Grid layout for form fields */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-x-11">
                     <MyInput label="Nom du client" name="nom" placeholder="Nom du client" form={form} />
                     <MyInput label="Nom commercial" name="nomCommercial" placeholder="Nom commercial" form={form} />
                     <MyInput label="Email" name="email" placeholder="Email" form={form} />
                     <MyInput label="Adresse" name="adresse" placeholder="Adresse" form={form} />
                     <MyInput label="NRC" name="nrc" placeholder="NRC" form={form} />
                     <MyInput label="NIF" name="nif" placeholder="NIF" form={form} />
-                    <MyInput label="AI" name="ai" placeholder="AI" form={form} />
+                    <MyInput label="AI" name="ai" placeholder="AI" form={form} /> 
                     <MyInput label="NIS" name="nis" placeholder="NIS" form={form} />
                     <MyInput label="Prix de la plaque" name="plaquePrix" type="number" placeholder="Prix de la plaque" form={form} />
                     <MyInput setp="0.01" label="Prix du film" name="filmPrix" type="number" placeholder="Prix du film" form={form} />
@@ -100,7 +101,7 @@ const CreateClientPage = () => {
 
                 {/* Dynamic phone number fields */}
                 <div className="mt-6">
-                    <label className="block text-gray-700 mb-2">Téléphone(s)</label>
+                    <label className="block text-gray-700">Téléphone(s)</label>
                     <div className="flex flex-wrap gap-4">
                         {form.watch("telephone")?.map((phone, index) => (
                             <div key={index} className="flex items-center gap-2">
@@ -128,7 +129,7 @@ const CreateClientPage = () => {
                             const updatedPhones = [...(form.getValues("telephone") || []), { number: "" }];
                             form.setValue("telephone", updatedPhones);
                         }}
-                        className="p-2 bg-green-500 text-white rounded-lg hover:bg-green-600 mt-4"
+                        className="p-2 bg-gray-200 text-blue-600 rounded-lg hover:bg-blue-100 mt-4"
                     >
                         Ajouter un numéro
                     </button>
@@ -148,9 +149,10 @@ const CreateClientPage = () => {
                 )}
 
                 {/* Submit button */}
-                <button type="submit" className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 mt-6">
+                <button type="submit" className="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 mt-6">
                     Créer Client
                 </button>
+                
             </form>
         </div>
     );

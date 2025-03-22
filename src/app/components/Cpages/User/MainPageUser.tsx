@@ -2,7 +2,7 @@ import { Mybutton } from "@/app/components/Button/Mybutton";
 import PathName from "@/app/components/PathName/PathName";
 import { Search } from "lucide-react";
 import { useState } from "react";
-import UserTable from "../../Table/Mytable";
+import UserTable from "../../Table/UserTable";
 
 const paths = [
   { label: "Home", href: "/" },
@@ -16,7 +16,7 @@ const MainPageUser = ({ onCreateUser }: { onCreateUser: () => void }) => {
   return (
     <div className="p-6">
       <PathName paths={paths} />
-      <h2 className="text-2xl font-bold  text-gray-800">Liste des Utilisateurs</h2>
+      <h2 className="text-2xl font-bold  text-blue-900">Liste des Utilisateurs</h2>
 
       <div className="p-4">
         {/* 📌 Ligne 1 : Titre et bouton alignés */}

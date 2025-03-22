@@ -34,7 +34,7 @@ const ClientTable = ({ search }: { search: string }) => {
     }, [search, clients]);
 
     return (
-        <div className="overflow-x-auto w-full mx-auto rounded-lg">
+        <div className="overflow-x-auto w-full mx-auto rounded-lg mt-8">
             <table className="min-w-full border border-gray-200 bg-white shadow-md rounded-lg text-sm">
                 <thead className="bg-blue-100 text-gray-700">
                     <tr>
