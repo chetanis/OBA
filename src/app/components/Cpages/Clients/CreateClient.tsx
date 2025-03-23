@@ -58,7 +58,7 @@ const CreateClientPage = () => {
 
         try {
             const result = await createClient(formData);
-
+            console.log(result);
             if (result.success) {
                 setSuccessMessage("Client créé avec succès !");
                 form.reset();

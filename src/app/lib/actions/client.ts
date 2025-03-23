@@ -122,22 +122,48 @@ export async function deleteEmploye(id: number) {
     }
 }
 
-export async function getClients(){
+export async function getClients() {
     try {
         const clients = await prisma.client.findMany({
-            include:{
-                telephone:true,
-                //nb of projects
-                _count:{
-                    select:{
-                        projects:true
+            select: {
+                id: true, // Ajout de l'ID pour correspondre au type attendu
+                nom: true,
+                nomCommercial: true,
+                email: true,
+                telephone: {
+                    select: {
+                        number: true, // Récupérer uniquement le numéro de téléphone
                     }
                 },
+                _count: {
+                    select: {
+                        projects: true, // Nombre de projets associés
+                    }
+                }
             }
         });
         return clients;
     } catch (error) {
-        console.log(error);
+        console.error("Erreur lors de la récupération des clients:", error);
         return [];
+    }
+}
+
+
+export async function getClientById(id: number) {
+    try {
+        const client = await prisma.client.findUnique({
+            where:{ id: Number(id) },
+            include: {
+                telephone: true,   // Inclure les téléphones associés
+                employes: true,    // Inclure les employés associés
+                projects: true     // Inclure les projets associés
+            }
+        });
+
+        return client;
+    } catch (error) {
+        console.error("Erreur lors de la récupération du client:", error);
+        return null;
     }
 }

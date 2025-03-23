@@ -2,17 +2,36 @@
 import { getClients } from "@/app/lib/actions/client";
 import { Client, Phone } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 
 
 const ClientTable = ({ search }: { search: string }) => {
-    const [clients, setClients] = useState<(Client & { telephone: Phone[] } & { _count: { projects: number } })[]>([]);
-    const [filteredClients, setFilteredClietns] = useState<(Client & { telephone: Phone[] } & { _count: { projects: number } })[]>([]);
-
+    const [clients, setClients] = useState<
+    { 
+        id: number; 
+        nom: string; 
+        nomCommercial: string | null; 
+        email: string | null; 
+        telephone: { number: string }[]; 
+        _count: { projects: number } 
+    }[]
+>([]);
+const [filteredClients, setFilteredClietns]= useState<
+    { 
+        id: number; 
+        nom: string; 
+        nomCommercial: string | null; 
+        email: string | null; 
+        telephone: { number: string }[]; 
+        _count: { projects: number } 
+    }[]
+>([]);
     useEffect(() => {
         const fetchClient = async () => {
             const data = await getClients();
+            console.log(data);
             setClients(data);
             setFilteredClietns(data);
         };
@@ -33,6 +52,12 @@ const ClientTable = ({ search }: { search: string }) => {
         }
     }, [search, clients]);
 
+    const router = useRouter();
+    
+    const handleRowClick = (id: number) => {
+        router.push(`/Client/${id}`); // Redirection avec `router.push()`
+      };
+
     return (
         <div className="overflow-x-auto w-full mx-auto rounded-lg mt-8">
             <table className="min-w-full border border-gray-200 bg-white shadow-md rounded-lg text-sm">
@@ -49,7 +74,7 @@ const ClientTable = ({ search }: { search: string }) => {
                 <tbody>
                     {filteredClients.length > 0 ? (
                         filteredClients.map((client, index) => (
-                            <tr key={index} className="border-t text-sm">
+                            <tr key={index} className="border-t text-sm cursor-pointer hover:bg-blue-50" onClick={()=>handleRowClick(client.id)}>
                                 <td className="px-4 py-2">{client.nom}</td>
                                 <td className="px-4 py-2">{client.nomCommercial}</td>
                                 <td className="px-4 py-2">{client.telephone[0]?.number}</td>
