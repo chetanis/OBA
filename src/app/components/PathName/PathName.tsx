@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,12 +6,14 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import React from "react";
 
 interface BreadcrumbProps {
-  paths: { label: string; href?: string }[];
+  label: string;
+  href?: string;
 }
 
-function Breadcrumbs({ paths }: BreadcrumbProps) {
+function Breadcrumbs({ paths, showLine = true }: { paths: BreadcrumbProps[], showLine?: boolean }) {
   return (
     <div className="mb-6">
       <Breadcrumb>
@@ -32,7 +33,7 @@ function Breadcrumbs({ paths }: BreadcrumbProps) {
         </BreadcrumbList>
       </Breadcrumb>
       {/* Ligne séparatrice */}
-      <div className="flex-grow border-t border-gray-300 mt-3 mx-4"></div>
+      {showLine ? <div className="flex-grow border-t border-gray-300 mt-3 mx-4"></div>: null}
     </div>
   );
 }
