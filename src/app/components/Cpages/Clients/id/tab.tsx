@@ -9,18 +9,17 @@ interface TabsNavProps {
 
 const TabsNav: React.FC<TabsNavProps> = ({ activeTab, setActiveTab }) => {
   return (
-    <div className="flex space-x-6 border-b border-gray-300">
-      {["all", "Employe de client", "Projet du client"].map((tab) => (
+    <div className="flex space-x-6 border-b border-blue-700">
+      {["Projets", "Employes", "all"].map((tab) => (
         <button
           key={tab}
           onClick={() => setActiveTab(tab)}
-          className={`pb-2 text-sm font-semibold capitalize ${
-            activeTab === tab
-              ? "text-black border-b-2 border-orange-500"
+          className={`pb-2 text-sm font-semibold capitalize px-4 py-2 transition-all ${activeTab === tab
+              ? "text-black border-t border-l border-r border-blue-700 rounded-t-lg bg-white -mb-[1px]"
               : "text-gray-400"
-          }`}
+            }`}
         >
-          {tab === "all" ? "Informations personnelle de client" : tab}
+          {tab === "all" ? "Info" : tab}
         </button>
       ))}
     </div>

@@ -1,14 +1,14 @@
 'use client';
 
-import { useState } from "react";
 import ClientInfo from "@/app/components/Cpages/Clients/id/informationsPersonelClient";
-import TabsNav from "./tab";
+import { useState } from "react";
 import EmployeList from "./SectionEmployeClients/EmployeList";
 import { ProjectList } from "./SectionEmployeClients/ProjectList";
+import TabsNav from "./tab";
 // Import du composant TabsNav
 
 export default function TabsComponent({ data }: { data: any }) {
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState("Projets"); // Onglet actif par défaut
 
   return (
     <div>
@@ -18,8 +18,8 @@ export default function TabsComponent({ data }: { data: any }) {
       {/* Affichage du contenu selon l'onglet actif */}
       <div className="mt-4">
         {activeTab === "all" && <ClientInfo data={data} />}
-        {activeTab === "Employe de client" && <EmployeList data={data} />}
-        {activeTab === "Projet du client" && <ProjectList  />}
+        {activeTab === "Employes" && <EmployeList data={data} />}
+        {activeTab === "Projets" && <ProjectList  />}
         {/* Ajoute ici le composant pour "Projet du client" si nécessaire */}
       </div>
     </div>
