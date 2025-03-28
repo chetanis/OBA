@@ -17,7 +17,7 @@ export const projectSchema = z.object({
 
   unitPrice: z.number().min(0, 'Le prix unitaire doit être un nombre positif'),
   expectedPrice: z.number().min(0, 'Le prix attendu doit être un nombre positif'),
-  additionalFees: z.number().min(0).default(0),
+  additionalFees: z.number().default(0),
   finalPrice: z.number().min(0, 'Le prix final doit être un nombre positif'),
 
   nbTaches: z.number().int().min(1, 'Le nombre de tâches doit être un entier positif'),

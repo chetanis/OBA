@@ -101,6 +101,7 @@ enum TacheStatus {
   EN_GRAVURE
   EN_LIVRAISON
   TERMINE
+  ANNULER
 }
 
 model TacheState {
