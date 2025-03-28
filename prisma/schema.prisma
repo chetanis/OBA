@@ -133,6 +133,7 @@ model Phone {
 model Employe {
   id        Int     @id @default(autoincrement())
   nom       String
+  fonction  String
   telephone Phone[]
   client    Client? @relation(fields: [clientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   clientId  Int?

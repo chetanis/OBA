@@ -2,11 +2,11 @@ import TabsComponent from "@/app/components/Cpages/Clients/id/TabsComponent";
 import PathName from "@/app/components/PathName/PathName";
 import { getClientById } from "@/app/lib/actions/client";
  // Composant client
-import React from "react";
+import React, { useState } from "react";
 
 const Page = async ({ params }: { params: any }) => {
   const data = await getClientById(params.id);
-
+  
   const paths = [
     { label: "Home", href: "/" },
     { label: "Clients", href: "/Client" },

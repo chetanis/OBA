@@ -5,8 +5,6 @@ import { MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-
-
 const ClientTable = ({ search }: { search: string }) => {
     const [clients, setClients] = useState<
     { 

@@ -40,7 +40,7 @@ const ClientInfo = ({ data }: { data: any }) => {
   }
 
   return (
-    <>
+    <div className="mb-8">
       <h2 className="text-2xl font-bold text-gray-900 my-8">Informations du Client</h2>
       <div className="bg-white rounded-lg text-xs mx-auto px-11">
         <div className="divide-y divide-gray-300">
@@ -68,15 +68,15 @@ const ClientInfo = ({ data }: { data: any }) => {
             </div>
           ))}
         </div>
-        <button type="submit" className="py-2 px-4 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-300 mt-6 text-base">
+        <button type="submit" className="py-2 px-4 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 mt-6 text-base">
           Modifier informations du client
         </button>
         
       </div>
 
       <h2 className="text-2xl font-bold text-gray-900 py-6">Contacte du Client</h2>
-        <PhoneList telephones={data.telephone} />
-    </>
+        <PhoneList telephones={data.telephone}/>
+    </div>
   );
 };
 

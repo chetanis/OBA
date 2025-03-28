@@ -10,7 +10,7 @@ export default function PhoneList({ telephones }: PhoneListProps) {
   }
 
   return (
-    <div className="divide-y divide-gray-300 text-sm px-11">
+    <div className="divide-y divide-gray-300 text-sm px-11 ">
       {telephones.map((tel) => (
         <div key={tel.id} className="grid grid-cols-4 py-2 items-center">
           <div>

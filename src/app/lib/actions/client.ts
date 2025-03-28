@@ -6,32 +6,37 @@ import prisma from "../prisma";
 
 
 
+// Fonction pour créer un client dans Prisma
 export async function createClient(input: ClientFormData) {
-    try {
-        const clientData = clientSchema.parse(input);
-        const client = await prisma.client.create({
-            data: {
-                ...clientData,
-                telephone: {
-                    create: clientData.telephone
-                },
-                employes: {
-                    create: clientData.employes?.map(employe => ({
-                        nom: employe.nom,
-                        telephone: {
-                            create: employe.telephone
-                        }
-                    }))
-                },
-            }
-        })
+  try {
+    const clientData = clientSchema.parse(input);
 
-        return { success: true, data: client }
+    const client = await prisma.client.create({
+      data: {
+        ...clientData,
+        telephone: {
+          create: clientData.telephone,
+        },
+        employes: {
+          create: clientData.employes?.map(employe => ({
+            nom: employe.nom,
+            fonction: employe.fonction, // Ajout de la fonction ici
+            telephone: {
+              create: employe.telephone,
+            },
+          })),
+        },
+      },
+    });
 
-    } catch (error) {
-        console.log(error);
-        return { success: false, error: error instanceof Error ? error.message : "une erreur s'est produite" };
-    }
+    return { success: true, data: client };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Une erreur s'est produite",
+    };
+  }
 }
 
 export async function updateClient(id: number, input: ClientFormData) {
@@ -69,27 +74,36 @@ export async function deleteClient(id: number) {
     }
 }
 
-export async function addEmploye(clientId: number, employe: EmployeFormData) {
+export async function createEmployeWithPhone(
+    clientId: number,
+    employeData: EmployeFormData
+  ) {
     try {
-        const employeData = employeSchema.parse(employe);
-        const createdEmploye = await prisma.employe.create({
-            data: {
-                ...employeData,
-                telephone: {
-                    create: employeData.telephone
-                },
-                client: {
-                    connect: { id: clientId }
-                }
+      // Création de l'employé avec son téléphone en une seule transaction
+      const newEmploye = await prisma.employe.create({
+        data: {
+          nom: employeData.nom,
+          fonction: employeData.fonction,
+          clientId: clientId,
+          telephone: {
+            create: {
+              number: employeData.telephone?.[0]?.number || '' // Assurez-vous que le schéma permet ceci
             }
-        });
-
-        return { success: true, data: createdEmploye };
+          }
+        },
+        include: {
+          telephone: true // Pour inclure les données du téléphone dans la réponse
+        }
+      })
+  
+      return newEmploye
     } catch (error) {
-        console.log(error);
-        return { success: false, error: error instanceof Error ? error.message : "une erreur s'est produite" };
+      console.error("Erreur lors de la création de l'employé:", error)
+      throw new Error("Échec de la création de l'employé")
+    } finally {
+      await prisma.$disconnect()
     }
-}
+  }
 
 export async function updateEmploye(id: number, employe: EmployeFormData) {
     try {
@@ -153,11 +167,15 @@ export async function getClients() {
 export async function getClientById(id: number) {
     try {
         const client = await prisma.client.findUnique({
-            where:{ id: Number(id) },
+            where: { id: Number(id) },
             include: {
-                telephone: true,   // Inclure les téléphones associés
-                employes: true,    // Inclure les employés associés
-                projects: true     // Inclure les projets associés
+                telephone: true,
+                employes: {
+                    include: {
+                        telephone: true  // Inclure les téléphones de chaque employé
+                    }
+                },
+                projects: true
             }
         });
 

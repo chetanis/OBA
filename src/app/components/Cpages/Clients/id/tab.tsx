@@ -16,7 +16,7 @@ const TabsNav: React.FC<TabsNavProps> = ({ activeTab, setActiveTab }) => {
           onClick={() => setActiveTab(tab)}
           className={`pb-2 text-sm font-semibold capitalize ${
             activeTab === tab
-              ? "text-black border-b-2 border-black"
+              ? "text-black border-b-2 border-orange-500"
               : "text-gray-400"
           }`}
         >

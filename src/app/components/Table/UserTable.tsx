@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import { deleteUser, getUsers } from "@/app/lib/actions/user";
-import DeleteUserButton from "../Cpages/User/ConfirmerDeleteUser";
+import DeleteUserButton from "../Cpages/User/DeleteUser";
 
 interface User {
   username: string;
