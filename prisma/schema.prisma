@@ -51,6 +51,7 @@ enum ProjectStatus {
   EN_COURS
   TERMINE
   EN_ATTENTE
+  ANNULER
 }
 
 enum ProjectType {

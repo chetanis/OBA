@@ -1,7 +1,15 @@
-import React from 'react'
+"use client";
 
-export const ProjectList = () => {
+import { useState } from 'react';
+import ProjectPage from '../../../Projects/ProjectPage';
+import CreateUserPage from '../../../User/CreateUser';
+
+export const ProjectList = ({ projects }: any) => {
+  const [isCreating, setIsCreating] = useState(false);
+
   return (
-    <div>ProjectList</div>
-  )
+    <div>
+      {isCreating ? <CreateUserPage /> : <ProjectPage projects={projects} onCreateProject={() => setIsCreating(true)} />}
+    </div>
+  );
 }

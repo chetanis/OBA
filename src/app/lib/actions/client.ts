@@ -40,148 +40,152 @@ export async function createClient(input: ClientFormData) {
 }
 
 export async function updateClient(id: number, input: ClientFormData) {
-    try {
+  try {
 
-        // we remove the employes from the client data
-        const {employes,...clientData} = clientSchema.parse(input);
+    // we remove the employes from the client data
+    const { employes, ...clientData } = clientSchema.parse(input);
 
 
-        const updatedClient = await prisma.client.update({
-            where: { id }, 
-            data: {
-                ...clientData,
-                telephone: {
-                    deleteMany: {}, 
-                    create: clientData.telephone,
-                },
-            },
-        });
+    const updatedClient = await prisma.client.update({
+      where: { id },
+      data: {
+        ...clientData,
+        telephone: {
+          deleteMany: {},
+          create: clientData.telephone,
+        },
+      },
+    });
 
-        return { success: true, data: updatedClient };
-    } catch (error) {
-        console.log(error);
-        return { success: false, error: error instanceof Error ? error.message : "une erreur s'est produite" };
-    }
+    return { success: true, data: updatedClient };
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: error instanceof Error ? error.message : "une erreur s'est produite" };
+  }
 }
 
 export async function deleteClient(id: number) {
-    try {
-        await prisma.client.delete({ where: { id } });
-        return { success: true };
-    } catch (error) {
-        console.log(error);
-        return { success: false, error: error instanceof Error ? error.message : "une erreur s'est produite" };
-    }
+  try {
+    await prisma.client.delete({ where: { id } });
+    return { success: true };
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: error instanceof Error ? error.message : "une erreur s'est produite" };
+  }
 }
 
 export async function createEmployeWithPhone(
-    clientId: number,
-    employeData: EmployeFormData
-  ) {
-    try {
-      // Création de l'employé avec son téléphone en une seule transaction
-      const newEmploye = await prisma.employe.create({
-        data: {
-          nom: employeData.nom,
-          fonction: employeData.fonction,
-          clientId: clientId,
-          telephone: {
-            create: {
-              number: employeData.telephone?.[0]?.number || '' // Assurez-vous que le schéma permet ceci
-            }
+  clientId: number,
+  employeData: EmployeFormData
+) {
+  try {
+    // Création de l'employé avec son téléphone en une seule transaction
+    const newEmploye = await prisma.employe.create({
+      data: {
+        nom: employeData.nom,
+        fonction: employeData.fonction,
+        clientId: clientId,
+        telephone: {
+          create: {
+            number: employeData.telephone?.[0]?.number || '' // Assurez-vous que le schéma permet ceci
           }
-        },
-        include: {
-          telephone: true // Pour inclure les données du téléphone dans la réponse
         }
-      })
-  
-      return newEmploye
-    } catch (error) {
-      console.error("Erreur lors de la création de l'employé:", error)
-      throw new Error("Échec de la création de l'employé")
-    } finally {
-      await prisma.$disconnect()
-    }
+      },
+      include: {
+        telephone: true // Pour inclure les données du téléphone dans la réponse
+      }
+    })
+
+    return newEmploye
+  } catch (error) {
+    console.error("Erreur lors de la création de l'employé:", error)
+    throw new Error("Échec de la création de l'employé")
+  } finally {
+    await prisma.$disconnect()
   }
+}
 
 export async function updateEmploye(id: number, employe: EmployeFormData) {
-    try {
-        const employeData = employeSchema.parse(employe);
-        const updatedEmploye = await prisma.employe.update({
-            where: { id },
-            data: {
-                ...employeData,
-                telephone: {
-                    deleteMany: {},
-                    create: employeData.telephone
-                }
-            }
-        });
+  try {
+    const employeData = employeSchema.parse(employe);
+    const updatedEmploye = await prisma.employe.update({
+      where: { id },
+      data: {
+        ...employeData,
+        telephone: {
+          deleteMany: {},
+          create: employeData.telephone
+        }
+      }
+    });
 
-        return { success: true, data: updatedEmploye };
-    } catch (error) {
-        console.log(error);
-        return { success: false, error: error instanceof Error ? error.message : "une erreur s'est produite" };
-    }
+    return { success: true, data: updatedEmploye };
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: error instanceof Error ? error.message : "une erreur s'est produite" };
+  }
 }
 
 export async function deleteEmploye(id: number) {
-    try {
-        await prisma.employe.delete({ where: { id } });
-        return { success: true };
-    } catch (error) {
-        console.log(error);
-        return { success: false, error: error instanceof Error ? error.message : "une erreur s'est produite" };
-    }
+  try {
+    await prisma.employe.delete({ where: { id } });
+    return { success: true };
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: error instanceof Error ? error.message : "une erreur s'est produite" };
+  }
 }
 
 export async function getClients() {
-    try {
-        const clients = await prisma.client.findMany({
-            select: {
-                id: true, // Ajout de l'ID pour correspondre au type attendu
-                nom: true,
-                nomCommercial: true,
-                email: true,
-                telephone: {
-                    select: {
-                        number: true, // Récupérer uniquement le numéro de téléphone
-                    }
-                },
-                _count: {
-                    select: {
-                        projects: true, // Nombre de projets associés
-                    }
-                }
-            }
-        });
-        return clients;
-    } catch (error) {
-        console.error("Erreur lors de la récupération des clients:", error);
-        return [];
-    }
+  try {
+    const clients = await prisma.client.findMany({
+      select: {
+        id: true, // Ajout de l'ID pour correspondre au type attendu
+        nom: true,
+        nomCommercial: true,
+        email: true,
+        telephone: {
+          select: {
+            number: true, // Récupérer uniquement le numéro de téléphone
+          }
+        },
+        _count: {
+          select: {
+            projects: true, // Nombre de projets associés
+          }
+        }
+      }
+    });
+    return clients;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des clients:", error);
+    return [];
+  }
 }
 
 
 export async function getClientById(id: number) {
-    try {
-        const client = await prisma.client.findUnique({
-            where: { id: Number(id) },
-            include: {
-                telephone: true,
-                employes: {
-                    include: {
-                        telephone: true  // Inclure les téléphones de chaque employé
-                    }
-                },
-                projects: true
-            }
-        });
+  try {
+    const client = await prisma.client.findUnique({
+      where: { id: Number(id) },
+      include: {
+        telephone: true,
+        employes: {
+          include: {
+            telephone: true  // Inclure les téléphones de chaque employé
+          }
+        },
+        projects: {
+          include: {
+            taches: true, // Inclure les tâches associées au projet
+          }
+        }
+      }
+    });
 
-        return client;
-    } catch (error) {
-        console.error("Erreur lors de la récupération du client:", error);
-        return null;
-    }
+    return client;
+  } catch (error) {
+    console.error("Erreur lors de la récupération du client:", error);
+    return null;
+  }
 }

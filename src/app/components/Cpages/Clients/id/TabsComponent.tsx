@@ -8,7 +8,7 @@ import TabsNav from "./tab";
 // Import du composant TabsNav
 
 export default function TabsComponent({ data }: { data: any }) {
-  const [activeTab, setActiveTab] = useState("Projets"); // Onglet actif par défaut
+  const [activeTab, setActiveTab] = useState("Liste des projets"); // Onglet actif par défaut
 
   return (
     <div>
@@ -19,7 +19,7 @@ export default function TabsComponent({ data }: { data: any }) {
       <div className="mt-4">
         {activeTab === "all" && <ClientInfo data={data} />}
         {activeTab === "Employes" && <EmployeList data={data} />}
-        {activeTab === "Projets" && <ProjectList  />}
+        {activeTab === "Liste des projets" && <ProjectList projects={data.projects} />}
         {/* Ajoute ici le composant pour "Projet du client" si nécessaire */}
       </div>
     </div>
