@@ -7,14 +7,22 @@ const EmployeList = ({ data }: { data: any }) => {
 
   // État pour stocker les employés
   const [mydata, setClient] = useState(data);
+  console.log('voici '+mydata);
 
   // Fonction pour ajouter un employé
   const handleEmployeAdded = (newEmploye: any) => {
-    setClient((prevData: any) => ({
-      ...prevData,
-      employes: [...(prevData.employes || []), newEmploye], // Ajoute le nouvel employé à la liste existante
-    }));
-  };
+    console.log("Ancien état :", mydata);
+    console.log("Nouvel employé :", newEmploye);
+
+    setClient((prevData: any) => {
+        const newState = {
+            ...prevData,
+            employes: [...prevData.employes, newEmploye]
+        };
+        console.log("Nouvel état :", newState);
+        return newState;
+    });
+};
 
   return (
     <div>

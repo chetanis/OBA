@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Pencil } from "lucide-react";
 import DeleteEmployeButton from "../Cpages/Clients/id/SectionEmployeClients/DeleteEmployeClient";
 import { deleteEmploye } from "@/app/lib/actions/client";
- // Assurez-vous que le chemin est correct
 
 const EmployeTable = ({ data }: { data: any }) => {
-  // ✅ État local pour stocker les employés
+  // ✅ État local des employés
   const [employes, setEmployes] = useState(data?.employes || []);
+
+  // ✅ Met à jour `employes` si `data.employes` change
+  useEffect(() => {
+    setEmployes(data?.employes || []);
+  }, [data?.employes]);
 
   // ✅ Fonction pour supprimer un employé
   const handleDeleteEmploye = async (id: number) => {
-    const response = await deleteEmploye(id); // Appel à la fonction de suppression
+    const response = await deleteEmploye(id);
 
     if (response.success) {
       setEmployes((prevEmployes: any) => prevEmployes.filter((emp: any) => emp.id !== id));
