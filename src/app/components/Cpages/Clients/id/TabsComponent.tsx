@@ -19,7 +19,7 @@ export default function TabsComponent({ data }: { data: any }) {
       <div className="mt-4">
         {activeTab === "all" && <ClientInfo data={data} />}
         {activeTab === "Employes" && <EmployeList data={data} />}
-        {activeTab === "Liste des projets" && <ProjectList projects={data.projects} />}
+        {activeTab === "Liste des projets" && <ProjectList client={data} />}
         {/* Ajoute ici le composant pour "Projet du client" si nécessaire */}
       </div>
     </div>

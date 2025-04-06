@@ -1,31 +1,56 @@
 'use client'
 
+import { getClientsNames } from '@/app/lib/actions/client';
 import { createProject } from '@/app/lib/actions/project';
 import { ProjectFormData, projectSchema } from '@/types/project';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react'; // Add useEffect
 import { useForm } from 'react-hook-form';
+import { Mybutton } from '../../Button/Mybutton';
+import ClientSelect from './ClientSelect';
 
-const CreateProject = () => {
-    const clients = [
-        { id: 1, nom: 'test' },
-        { id: 2, nom: 'test' },
-    ]
+type Client = {
+    id: number;
+    nom: string
+}
 
+const CreateProject = ({ onCancel, clientId }: { onCancel: () => void, clientId?: number }) => {
     const [projectType, setProjectType] = useState<'CTP' | 'CTF'>('CTP');
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [taches, setTaches] = useState<{ nbPlaque_Film: number }[]>([]);
+    const [clients, setClients] = useState<Client[]>([]); // State for clients list
+    const [searchTerm, setSearchTerm] = useState(''); // State for client search
+    const [isLoadingClients, setIsLoadingClients] = useState(false); // Loading state
 
-    const { register, handleSubmit, formState: { errors }, watch, setValue, resetField } = useForm<ProjectFormData>({
+    const { control, register, handleSubmit, formState: { errors }, watch, setValue, resetField } = useForm<ProjectFormData>({
         resolver: zodResolver(projectSchema),
         defaultValues: {
             type: 'CTP',
             additionalFees: 0,
             nbTaches: 1,
-            clientId: 3,
+            clientId: clientId,
         }
     });
+
+    // Fetch clients when component mounts (only if no clientId provided)
+    useEffect(() => {
+        if (!clientId) {
+            const fetchClients = async () => {
+                setIsLoadingClients(true);
+                try {
+                    const fetchedClients = await getClientsNames();
+                    setClients(fetchedClients || []);
+                } catch (error) {
+                    console.error('Failed to fetch clients:', error);
+                    setErrorMessage('Failed to load clients');
+                } finally {
+                    setIsLoadingClients(false);
+                }
+            };
+            fetchClients();
+        }
+    }, [clientId]);
 
     const handleTypeChange = (type: 'CTP' | 'CTF') => {
         setProjectType(type);
@@ -58,6 +83,11 @@ const CreateProject = () => {
         setTaches(newTaches);
     };
 
+    // Filter clients based on search term
+    const filteredClients = clients.filter(client =>
+        client.nom.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     const submitHandler = async (data: ProjectFormData) => {
         try {
             // Calculate final price
@@ -85,14 +115,22 @@ const CreateProject = () => {
 
     return (
         <div>
-            <div className='flex'>
-
-            <h2 className="text-2xl font-bold ml-4 mb-6 text-blue-900">Créer un Projet</h2>
-            <button>
-                <a href={`Client/`} className="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 ml-auto mr-4 mt-2">Retour</a>
-            </button>
+            <div className='flex justify-between items-center mb-1'>
+                <h2 className="flex justify-start items-center rounded-lg mt-2 relative text-2xl font-bold ml-4 mb-6 text-blue-900">Créer un Projet</h2>
+                <Mybutton className='mr-10' text="Annuler" onClick={onCancel} />
             </div>
             <form onSubmit={handleSubmit(submitHandler)} className="mt-4 px-11">
+                {/* Client selection */}
+                <div >
+                    {clientId ?
+                        null : (
+                            <ClientSelect
+                                control={control}
+                                errors={errors}
+                                isLoadingClients={isLoadingClients}
+                                clients={clients} />
+                        )}
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 gap-x-11">
                     {/* Basic info */}
                     <div className="mb-4">
@@ -140,7 +178,6 @@ const CreateProject = () => {
                     {projectType === 'CTP' ? (
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-1">Type de plaque</label>
-
                             <select
                                 {...register('typePlaque')}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
@@ -253,23 +290,6 @@ const CreateProject = () => {
                             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         />
                         {errors.nbTaches && <p className="mt-1 text-sm text-red-600">{errors.nbTaches.message}</p>}
-                    </div>
-
-                    {/* Client selection */}
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Client</label>
-                        <select
-                            {...register('clientId')}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        >
-                            <option value="">Sélectionner un client</option>
-                            {clients.map(client => (
-                                <option key={client.id} value={client.id}>
-                                    {client.nom}
-                                </option>
-                            ))}
-                        </select>
-                        {errors.clientId && <p className="mt-1 text-sm text-red-600">{errors.clientId.message}</p>}
                     </div>
 
                     {/* Image upload */}

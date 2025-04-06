@@ -189,3 +189,19 @@ export async function getClientById(id: number) {
     return null;
   }
 }
+
+
+export async function getClientsNames() {
+  try {
+    const clients = await prisma.client.findMany({
+      select: {
+        id: true,
+        nom: true,
+      },
+    });
+    return clients;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des noms des clients:", error);
+    return [];
+  }
+}
