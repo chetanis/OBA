@@ -30,9 +30,20 @@ export const projectSchema = z.object({
 
   taches: z.array(
     z.object({
-        nbPlaque_Film: z.number().int().min(1, 'Le nombre de plaques doit être un entier positif'),
+      nbPlaque_Film: z.number().int().min(1, 'Le nombre de plaques doit être un entier positif'),
     })
   ).optional(),
 });
 
 export type ProjectFormData = z.infer<typeof projectSchema>;
+
+
+export interface ProjectQueryParams {
+  page: number;
+  pageSize: number;
+  search: string;
+  startDate: string | undefined;
+  endDate: string | undefined;
+  status: string | undefined;
+  type: string | undefined;
+}

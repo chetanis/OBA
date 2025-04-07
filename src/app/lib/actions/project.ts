@@ -1,5 +1,6 @@
 "use server";
 
+import { buildProjectWhereClause, SearchParams } from "@/lib/search";
 import { ProjectFormData, projectSchema } from "@/types/project";
 import { ProjectStatus, TacheStatus } from "@prisma/client";
 import { writeFile } from "fs/promises";
@@ -60,10 +61,44 @@ export async function createProject(inupt: ProjectFormData) {
         }
 
         revalidatePath(`/Client/${data.clientId}`)
+        revalidatePath('/Travaux')
 
         return { success: true, data: project };
     } catch (error) {
         console.error("Erreur lors de la création du projet:", error);
         return { success: false, error: error instanceof Error ? error.message : "Erreur lors de la création du projet" };
+    }
+}
+
+export async function getAllProjects(
+    page: number = 1, 
+    pageSize: number = 10, 
+    searchParams: SearchParams
+){
+    try {
+        const where = buildProjectWhereClause(searchParams);
+        const skip = (page - 1) * pageSize;
+        const take = pageSize;
+
+        const [projects, total] = await prisma.$transaction([
+            prisma.project.findMany({
+                where,
+                include: {
+                    client: {
+                        select: {
+                            nom: true,
+                        },
+                    },
+                },
+                skip,
+                take,
+            }),
+            prisma.project.count({ where }),
+        ]);
+
+        return { projects, total };
+    } catch (error) {
+        console.error("Erreur lors de la récupération des projets:", error);
+        return { success: false, error: error instanceof Error ? error.message : "Erreur lors de la récupération des projets" };
     }
 }

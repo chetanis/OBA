@@ -1,37 +1,110 @@
-import { Mybutton } from "@/app/components/Button/Mybutton";
-import { Search } from "lucide-react";
-import { useState } from "react";
-import ClientTable from "../../Table/ClientTable";
+import { getAllProjects } from "@/app/lib/actions/project";
+import { ProjectQueryParams } from "@/types/project";
+import { Project } from "@prisma/client";
+import { Pencil } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import SearchBar from "./SearchBar";
 
 
-const MainPageProject = ({ onCreateProject }: { onCreateProject: () => void }) => {
-  const [search, setSearch] = useState("");
+
+const MainPageProject = ({ onCreateProject, params }: { onCreateProject: () => void, params: ProjectQueryParams }) => {
+  const [projects, setProjects] = useState<(Project & { client: { nom: string } | null })[]>([]);
+  const [total, setTotal] = useState(0);
+  const router = useRouter();
+
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const { projects, total } = await getAllProjects(params.page, params.pageSize, {
+        search: params.search || "",
+        startDate: params.startDate,
+        endDate: params.endDate,
+        status: params.status,
+        type: params.type,
+      }
+      );
+      setProjects(projects || []);
+      setTotal(total || 0);
+    };
+    fetchProjects();
+  }, [params]);
+
+
+
+  const handleRowClick = (id: number) => {
+    router.push(`/projet/${id}`);
+  };
+
+  const getRoleClass = (role: string) => {
+    switch (role) {
+      case "TERMINE":
+        return "bg-green-100 text-green-600";
+      case "EN_ATTENTE":
+        return "bg-orange-100 text-orange-600";
+      case "ANNULER":
+        return "bg-red-100 text-red-600";
+      default:
+        return "bg-blue-100 text-blue-600";
+    }
+  };
 
   return (
     <div className="">
       <h2 className="text-2xl font-bold text-blue-900">Liste des Projets</h2>
 
-      <div className="p-4">
-        {/* 📌 Ligne 1 : Titre et bouton alignés */}
-        <div className="flex justify-between items-center mb-1">
-          <div className="flex justify-start items-center rounded-lg mt-2 relative w-full max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
-            <input
-              type="text"
-              placeholder="Rechercher un projet..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full p-2 pl-10 border rounded-lg shadow-sm focus:outline-none border-blue-400 focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          {/* Bouton Créer projet */}
-          <Mybutton text="Ajouter un projet" onClick={onCreateProject} />
-        </div>
-      </div>
+      <SearchBar onCreateProject={onCreateProject}/>
 
       {/* 📌 Table des Projets */}
-      <div className="mt-1">
-        <ClientTable search={search} />
+      <div className="mt-6">
+        <div className="overflow-x-auto w-full mx-auto rounded-lg">
+          <table className="min-w-full border border-gray-200 bg-white shadow-md rounded-lg text-sm">
+            <thead className="bg-blue-100 text-gray-700">
+              <tr>
+                <th className="px-4 py-2 text-left">Nom</th>
+                <th className="px-4 py-2 text-left">Client</th>
+                <th className="px-4 py-2 text-left">Type</th>
+                <th className="px-4 py-2 text-left">Dimension</th>
+                <th className="px-4 py-2 text-left">Nb</th>
+                <th className="px-4 py-2 text-left">Etat</th>
+                <th className="px-4 py-2 text-left">Créé le</th>
+                <th className="px-4 py-2 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {projects.length > 0 ? (
+                projects.map((project, index) => (
+                  <tr key={index} className="border-t text-sm">
+                    <td className="px-4 py-2">{project.nom}</td>
+                    <td className="px-4 py-2">{project.client?.nom}</td>
+                    <td className="px-4 py-2">{project.type}</td>
+                    <td className="px-4 py-2">
+                      {project.typePlaque ?? `${project.dimension_x} x ${project.dimension_y}`}
+                    </td>
+                    <td className="px-4 py-2">{project.nbPlaque_Film}</td>
+                    <td className="px-4 py-2">
+                      <span className={`px-2 py-1 text-xs font-medium rounded-lg ${getRoleClass(project.status)}`}>
+                        {project.status}
+                      </span>
+                    </td>
+                    <td className="px-4 py-2">{project.createdAt.toDateString()}</td>
+                    <td className="px-4 py-2 flex justify-center gap-2">
+                      <button className="text-gray-500 hover:text-blue-600">
+                        <Pencil size={16} />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="text-center py-4 text-gray-500">
+                    Aucun projet trouvé
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

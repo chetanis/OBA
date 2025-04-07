@@ -1,24 +1,16 @@
-"use client";
-import CreateProject from "@/app/components/Cpages/Projects/CreateProject";
-import MainPageProject from "@/app/components/Cpages/Projects/MainPageProject";
-import PathName from "@/app/components/PathName/PathName";
-import { useState } from "react";
+import { getQueryParams } from "@/lib/url";
+import ClientPage from "./clientPage";
 
-const page = () => {
-  const [isCreating, setIsCreating] = useState(false);
-  const paths = [
-    { label: "Home", href: "/" },
-    { label: "Projets", href: "/Travaux" },
-    { label: "Liste des Projets" }
-  ];
+async function page({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | '' }> }) {
+  const params = await searchParams;
 
+  
+  const quereParams= getQueryParams(params)
+  console.log('paa',quereParams);
   return (
-    // <ProtectedRouteAdmin>
-    <div className="p-6">
-      <PathName paths={paths} />
-      {isCreating ? <CreateProject onCancel={() => setIsCreating(false)} /> : <MainPageProject onCreateProject={() => setIsCreating(true)} />}
+    <div>
+      <ClientPage params={quereParams} />
     </div>
-    // </ProtectedRouteAdmin>
   );
 }
 
