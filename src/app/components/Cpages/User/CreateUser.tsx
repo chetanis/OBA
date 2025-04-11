@@ -5,11 +5,11 @@ import { userSchema } from "@/types/user"; // Assure-toi que l'import est correc
 import MyInput from "@/app/components/Input/MyInput"; // Assure-toi que le chemin est correct
 import PathName from "../../PathName/PathName";
 import { createUser } from "@/app/lib/actions/user";
-
+import { Role } from "@prisma/client";
 type UserFormData = {
   username: string;
   password: string;
-  role: "admin" | "infographe" | "employe";
+  role: Role;
 };
 
 const CreateUserPage = () => {

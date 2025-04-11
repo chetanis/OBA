@@ -1,50 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { User, Building, Mail, MapPin, FileText, DollarSign } from "lucide-react";
 import PhoneList from "./PhoneListeClient";
+import UpdateClientDialog from "./ModefierClient/UpdetClient";
+import AddPhoneDialog from "./ModefierClient/AddPhoneNumber";
 
-interface ClientInfoProps {
-  data: {
-    id: number;
-    nom: string;
-    nomCommercial?: string;
-    email?: string;
-    adresse?: string;
-    nrc?: string;
-    nif?: string;
-    ai?: string;
-    nis?: string;
-    plaquePrix?: number;
-    filmPrix?: number;
-    telephone?: {
-      id: number;
-      number: string;
-      clientId: number | null;
-      employeId: number | null;
-    }[];
-    employes?: {
-      id: number;
-      nom: string;
-      clientId: number | null;
-    }[];
-    projects?: {
-      id: number;
-      type: string; // Remplacez `ProjectType` par le type réel si nécessaire
-      // Ajoutez les autres champs si nécessaire
-    }[];
-  } | null;
-}
+const ClientInfo = ({ data1 }: { data1: any }) => {
+  const [data, setdataClient] = useState(data1);
+  console.log(data1);
+  // Fonction pour supprimer un téléphone
+  const handleDeletePhone = (phoneId: number) => {
+    setdataClient((prevData: { telephone: any[] }) => ({
+      ...prevData,
+      telephone: prevData.telephone.filter((tel) => tel.id !== phoneId),
+    }));
+  };
 
-const ClientInfo = ({ data }: { data: any }) => {
   if (!data) {
     return <p className="text-red-500">Aucune donnée client disponible.</p>;
   }
 
   return (
     <div className="mb-8">
+      {/* Informations du client */}
       <h2 className="text-2xl font-bold text-gray-900 my-8">Informations du Client</h2>
       <div className="bg-white rounded-lg text-xs mx-auto px-11">
         <div className="divide-y divide-gray-300">
-          {[
+          {[ 
             { label: "Nom", value: data.nom, icon: <User className="text-blue-500" /> },
             { label: "Nom Commercial", value: data.nomCommercial, icon: <Building className="text-red-500" /> },
             { label: "Email", value: data.email, icon: <Mail className="text-orange-500" /> },
@@ -54,7 +35,7 @@ const ClientInfo = ({ data }: { data: any }) => {
             { label: "AI", value: data.ai, icon: <FileText className="text-yellow-500" /> },
             { label: "NIS", value: data.nis, icon: <FileText className="text-yellow-500" /> },
             { label: "Plaque Prix", value: data.plaquePrix, icon: <DollarSign className="text-green-500" /> },
-            { label: "Film Prix", value: data.filmPrix, icon: <DollarSign className="text-green-500" /> },
+            { label: "Film Prix", value: data.filmPrix, icon: <DollarSign className="text-green-500" /> }
           ].map(({ label, value, icon }, index) => (
             <div key={index} className="grid grid-cols-4 py-3 items-center">
               <div className="flex items-center text-gray-700 text-left">
@@ -68,14 +49,28 @@ const ClientInfo = ({ data }: { data: any }) => {
             </div>
           ))}
         </div>
-        <button type="submit" className="py-2 px-4 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 mt-6 text-base">
-          Modifier informations du client
-        </button>
-        
+
+        {/* Mise à jour des informations du client */}
+        <UpdateClientDialog data={data} onUpdate={(updatedClient) => setdataClient(updatedClient)} />
       </div>
 
+      {/* Informations des contacts du client */}
       <h2 className="text-2xl font-bold text-gray-900 py-6">Contacte du Client</h2>
-        <PhoneList telephones={data.telephone}/>
+      <div className="px-11">
+        {/* Liste des téléphones du client */}
+        <PhoneList telephones={data.telephone} onDeletePhone={handleDeletePhone} />
+
+        {/* Ajouter un téléphone */}
+        <AddPhoneDialog 
+          data1={data} 
+          onUpdate={(updatedClient) => {
+            setdataClient((prev: { telephone: any; }) => ({
+              ...prev,
+              telephone: [...(prev?.telephone || []), ...(updatedClient.telephone || [])],
+            }));
+          }} 
+        />
+      </div>
     </div>
   );
 };

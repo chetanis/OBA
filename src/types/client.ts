@@ -1,9 +1,12 @@
 import { z } from 'zod';
 
-// Schéma pour un téléphone
-const phoneSchema = z.object({
-  number: z.string().min(1, 'Le numéro de téléphone est requis'),
+export const phoneSchema = z.object({
+  number: z
+    .string()
+    .regex(/^\d{10}$/, "Le numéro de téléphone doit contenir exactement 10 chiffres"),
 });
+
+export type PhoneFormData = z.infer<typeof phoneSchema>;
 
 // Schéma pour un employé avec la fonction ajoutée
 export const employeSchema = z.object({
@@ -31,4 +34,23 @@ export const clientSchema = z.object({
 });
 
 export type ClientFormData = z.infer<typeof clientSchema>;
+
+
+
+// Schéma pour la mise à jour d'un client (sans employés ni téléphones)
+export const updateClientSchema = z.object({
+  nom: z.string().min(1, "Le nom du client est requis"),
+  nomCommercial: z.string().optional(),
+  email: z.string().email("L'email doit être valide").optional(),
+  adresse: z.string().optional(),
+  nrc: z.string().optional(),
+  nif: z.string().optional(),
+  ai: z.string().optional(),
+  nis: z.string().optional(),
+  plaquePrix: z.number().min(0, "Le prix de la plaque doit être un nombre positif").optional(),
+  filmPrix: z.number().min(0, "Le prix du film doit être un nombre positif").optional(),
+  // ⚠️ On exclut volontairement "telephone" et "employes"
+});
+
+export type UpdateClientFormData = z.infer<typeof updateClientSchema>;
 

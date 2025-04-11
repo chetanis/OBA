@@ -1,6 +1,6 @@
 'use server'
 
-import { ClientFormData, clientSchema, EmployeFormData, employeSchema } from "@/types/client";
+import { ClientFormData, clientSchema, EmployeFormData, employeSchema, phoneSchema, UpdateClientFormData, updateClientSchema } from "@/types/client";
 import prisma from "../prisma";
 
 
@@ -39,28 +39,23 @@ export async function createClient(input: ClientFormData) {
   }
 }
 
-export async function updateClient(id: number, input: ClientFormData) {
+export async function updateClient(id: number, input: UpdateClientFormData) {
   try {
-
-    // we remove the employes from the client data
-    const { employes, ...clientData } = clientSchema.parse(input);
-
+    // Validation avec le schema de mise à jour
+    const clientData = updateClientSchema.parse(input);
 
     const updatedClient = await prisma.client.update({
       where: { id },
-      data: {
-        ...clientData,
-        telephone: {
-          deleteMany: {},
-          create: clientData.telephone,
-        },
-      },
+      data: clientData, // On envoie uniquement les champs validés
     });
 
     return { success: true, data: updatedClient };
   } catch (error) {
-    console.log(error);
-    return { success: false, error: error instanceof Error ? error.message : "une erreur s'est produite" };
+    console.error("Erreur lors de la mise à jour du client :", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Une erreur s'est produite",
+    };
   }
 }
 
@@ -105,26 +100,7 @@ export async function createEmployeWithPhone(
   }
 }
 
-export async function updateEmploye(id: number, employe: EmployeFormData) {
-  try {
-    const employeData = employeSchema.parse(employe);
-    const updatedEmploye = await prisma.employe.update({
-      where: { id },
-      data: {
-        ...employeData,
-        telephone: {
-          deleteMany: {},
-          create: employeData.telephone
-        }
-      }
-    });
 
-    return { success: true, data: updatedEmploye };
-  } catch (error) {
-    console.log(error);
-    return { success: false, error: error instanceof Error ? error.message : "une erreur s'est produite" };
-  }
-}
 
 export async function deleteEmploye(id: number) {
   try {
@@ -203,5 +179,48 @@ export async function getClientsNames() {
   } catch (error) {
     console.error("Erreur lors de la récupération des noms des clients:", error);
     return [];
+  }
+}
+
+
+export async function addPhoneToClient(clientId: number, input: unknown) {
+  try {
+    const phoneData = phoneSchema.parse(input);
+
+    const phone = await prisma.phone.create({
+      data: {
+        number: phoneData.number,
+        client: {
+          connect: { id: clientId },
+        },
+      },
+    });
+  
+    return { success: true, data: phone };
+  } catch (error) {
+    console.error("Erreur ajout téléphone :", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Une erreur s'est produite",
+    };
+  }
+}
+
+
+export async function deletePhoneById(phoneId: number) {
+  try {
+    await prisma.phone.delete({
+      where: {
+        id: phoneId,
+      },
+    });
+     
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur suppression téléphone :", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Une erreur s'est produite",
+    };
   }
 }

@@ -62,8 +62,8 @@ const UserTable = ({ search }: { search: string }) => {
     }else{
       console.log('haja rey ghalta ');
     }
-
   }
+  
 
   return (
     <div className="overflow-x-auto w-full mx-auto rounded-lg">

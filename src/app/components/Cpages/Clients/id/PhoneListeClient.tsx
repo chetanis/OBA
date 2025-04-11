@@ -1,16 +1,18 @@
-import { Phone, Pencil, Trash2 } from "lucide-react";
+import { Phone } from "lucide-react";
+import DeletePhone from "./ModefierClient/DeletePhone";
 
 interface PhoneListProps {
   telephones: { id: number; number: string }[];
+  onDeletePhone: (id: number) => void; // Prop pour supprimer un téléphone
 }
 
-export default function PhoneList({ telephones }: PhoneListProps) {
+export default function PhoneList({ telephones, onDeletePhone }: PhoneListProps) {
   if (!Array.isArray(telephones) || telephones.length === 0) {
     return null;
   }
 
   return (
-    <div className="divide-y divide-gray-300 text-sm px-11 ">
+    <div className="divide-y divide-gray-300 text-sm">
       {telephones.map((tel) => (
         <div key={tel.id} className="grid grid-cols-4 py-2 items-center">
           <div>
@@ -20,12 +22,8 @@ export default function PhoneList({ telephones }: PhoneListProps) {
             {tel.number}
           </div>
           <div className="flex justify-center items-center gap-2">
-            <button className="text-gray-500 hover:text-blue-600">
-              <Pencil size={16} />
-            </button>
-            <button className="text-gray-500 hover:text-red-600">
-              <Trash2 size={16} />
-            </button>
+            {/* On passe onDeletePhone au composant DeletePhone */}
+            <DeletePhone phone={tel.number} id={tel.id} onDelete={onDeletePhone} />
           </div>
         </div>
       ))}

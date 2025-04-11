@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 type UserFormData = {
   username: string;
   password: string;
-  role: "admin" | "infographe" | "employe";
+  role: Role;
 };
 // **1️⃣ Fonction pour créer un utilisateur**
 export async function createUser(data: UserFormData) {
@@ -75,7 +75,6 @@ export async function updateUser(formData: FormData) {
     return { error: "Erreur lors de la mise à jour de l'utilisateur" };
   }
 }
-
 
 export async function deleteUser(username: string) {
   if (!username) return { error: "Nom d'utilisateur requis" };

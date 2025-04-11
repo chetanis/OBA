@@ -17,7 +17,7 @@ export default function TabsComponent({ data }: { data: any }) {
 
       {/* Affichage du contenu selon l'onglet actif */}
       <div className="mt-4">
-        {activeTab === "all" && <ClientInfo data={data} />}
+        {activeTab === "all" && <ClientInfo data1={data} />}
         {activeTab === "Employes" && <EmployeList data={data} />}
         {activeTab === "Liste des projets" && <ProjectList client={data} />}
         {/* Ajoute ici le composant pour "Projet du client" si nécessaire */}
