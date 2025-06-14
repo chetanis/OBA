@@ -4,9 +4,9 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-
+import SECRET_KEY from '/.env' ;
 const prisma = new PrismaClient();
-const SECRET_KEY = "votre_secret_key"; // Remplacez par une clé sécurisée
+
 
 
 //fonction de login 

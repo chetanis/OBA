@@ -21,6 +21,7 @@ import { z } from "zod";
 import { updateClient } from "@/app/lib/actions/client";
 import ConfirmClientUpdateDialog from "./ConfirmClientUpdateDialog";
 import { UpdateClientFormData, updateClientSchema } from "@/types/client";
+import PhoneList from "../PhoneListeClient";
  // <-- importer le 2e composant
 
 
@@ -152,6 +153,7 @@ export default function UpdateClientDialog({
               <Button type="submit">Modifier</Button>
             </DialogFooter>
           </form>
+          <PhoneList telephones={[{id:1,number:"0550080333"}]} onDeletePhone={()=>{}} />
         </DialogContent>
       </Dialog>
 
